@@ -1,0 +1,7 @@
+pandas
+numpy
+matplotlib
+requests
+akshare
+lxml
+beautifulsoup4

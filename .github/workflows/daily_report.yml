@@ -1,0 +1,38 @@
+name: Daily Market Report Automation
+
+on:
+  schedule:
+    # 每天北京时间 17:45 运行 (UTC 09:45)
+    - cron: '45 9 * * 1-5'
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Market Analysis
+      run: |
+        # 依次运行抓取、绘图、报告更新逻辑
+        python daily_cloud_update.py
+
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name 'qimingqianxing'
+        git config --global user.email 'qimingqianxing@example.com'
+        git add .
+        git commit -m "Auto Update: $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        git push origin main
