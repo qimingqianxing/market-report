@@ -5,89 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A股全维度股市温度计报告 - 投研助手</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f0f2f5;
-        }
-        .container {
-            background-color: #fff;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-        h1 {
-            color: #b22222;
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-        .date-tag {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 40px;
-            background: #fdf2f2;
-            display: inline-block;
-            padding: 4px 15px;
-            border-radius: 20px;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .section {
-            margin-bottom: 60px;
-        }
-        .section-title {
-            border-left: 8px solid #b22222;
-            padding-left: 15px;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            color: #1a1a1a;
-            display: flex;
-            align-items: center;
-        }
-        .report-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            border: 1px solid #e1e4e8;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            margin: 0 auto;
-        }
-        .desc {
-            margin-top: 25px;
-            font-size: 16px;
-            color: #34495e;
-            background: #fffafa;
-            padding: 22px;
-            border-radius: 12px;
-            border-left: 4px solid #b22222;
-            line-height: 1.8;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 80px;
-            color: #999;
-            font-size: 14px;
-            border-top: 1px solid #eee;
-            padding-top: 30px;
-        }
-        /* Mobile adjustment */
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            .container { padding: 25px 15px; }
-            h1 { font-size: 24px; }
-            .section-title { font-size: 20px; }
-            .desc { font-size: 14px; padding: 15px; }
-        }
+        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 950px; margin: 0 auto; padding: 20px; background-color: #f0f2f5; }
+        .container { background-color: #fff; padding: 40px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        h1 { color: #b22222; text-align: center; font-size: 28px; margin-bottom: 8px; }
+        .date-tag { text-align: center; color: #666; font-size: 14px; margin-bottom: 40px; background: #fdf2f2; display: inline-block; padding: 4px 15px; border-radius: 20px; position: relative; left: 50%; transform: translateX(-50%); }
+        .section { margin-bottom: 60px; }
+        .section-title { border-left: 8px solid #b22222; padding-left: 15px; font-size: 22px; font-weight: bold; margin-bottom: 25px; color: #1a1a1a; }
+        .report-img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin: 0 auto; }
+        .desc { margin-top: 25px; font-size: 16px; color: #34495e; background: #fffafa; padding: 22px; border-radius: 12px; border-left: 4px solid #b22222; line-height: 1.8; }
+        .footer { text-align: center; margin-top: 80px; color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 30px; }
+        @media (max-width: 600px) { body { padding: 10px; } .container { padding: 25px 15px; } h1 { font-size: 24px; } }
     </style>
 </head>
 <body>
@@ -96,26 +23,28 @@
         <div class="date-tag">🗓️ 报告日期：2026年3月26日 | 数据截止：2026年3月25日</div>
 
         <div class="section">
-            <div class="section-title">📊 1. 13年全周期对比：经典 vs 专业版</div>
-            <!-- 使用了参数 ?v=... 来强制浏览器不使用缓存 -->
-            <img class="report-img" src="https://comein-files.oss-cn-hangzhou.aliyuncs.com/comein-files/cloud-document/2026-03-26/9cc2544eb7744e3ca3e6ba672d845d4e/9a767241d4aa4bc99270c71dfe999603.png?v=202603261040" alt="13年周期对比图">
+            <div class="section-title">📉 1. 17只自选股：13年长周期热度对比</div>
+            <!-- 新增的自选股温度对比图 -->
+            <img class="report-img" src="https://comein-files.oss-cn-hangzhou.aliyuncs.com/comein-files/cloud-document/2026-03-26/edb343869aa54438883194ebea68a98c/47c2f30e722540939c5e75cf1b3dd8a7.png" alt="自选股温度对比图">
             <div class="desc">
-                <strong>模型解读：</strong> 经典版采用 PE/PB 50:50 均值。专业版（价值敏感型）在 PB 极低区域（<30%）自动强化资产价值权重，能更敏锐捕捉历史大底。目前读数约 75.8%，处于中性偏热区间。
+                <strong>横向诊断：</strong> 黑色虚线（75.8%）为当前全市场平均热度。我们可以清晰看到：
+                <br>• <strong>民生银行、乐舒适、圣诺医药、统联精密</strong> 处于 13 年极度冰点区域（蓝色/绿色），是极低风险洼地。
+                <br>• <strong>蓝晓科技、小米集团</strong> 已接近全市场热度（橙色），需警惕高位波动。
+                <br>• <strong>新天然气</strong>（22.8%）与全市场呈现巨大的“估值差”，补涨预期强烈。
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">🧭 2. 4D 全维度情绪热力图 (大图版)</div>
-            <!-- 使用了参数 ?v=... 来强制浏览器不使用缓存 -->
-            <img class="report-img" src="https://comein-files.oss-cn-hangzhou.aliyuncs.com/comein-files/cloud-document/2026-03-26/877da42e3ca843a080356f8a6cc16310/05f69de0711e49efb2ba4bdc378d2cfb.png?v=202603261040" alt="4D全维度垂直堆叠报告">
-            <div class="desc">
-                <strong>多维深度：</strong> 本次升级采用了 5 层垂直堆叠布局。每一维度（估值、ERP、情绪、宽度）均获得了<strong>与主图同等宽度</strong>的展示空间。这种布局能让您更直观地观察到不同维度在历史高低点处的同步性与背离情况。
-            </div>
+            <div class="section-title">📊 2. 13年全周期对比：经典 vs 专业版</div>
+            <img class="report-img" src="https://comein-files.oss-cn-hangzhou.aliyuncs.com/comein-files/cloud-document/2026-03-26/9cc2544eb7744e3ca3e6ba672d845d4e/9a767241d4aa4bc99270c71dfe999603.png" alt="13年周期对比图">
         </div>
 
-        <div class="footer">
-            本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议
+        <div class="section">
+            <div class="section-title">🧭 3. 4D 全维度情绪热力图 (大图版)</div>
+            <img class="report-img" src="https://comein-files.oss-cn-hangzhou.aliyuncs.com/comein-files/cloud-document/2026-03-26/877da42e3ca843a080356f8a6cc16310/05f69de0711e49efb2ba4bdc378d2cfb.png" alt="4D报告图">
         </div>
+
+        <div class="footer">本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议</div>
     </div>
 </body>
 </html>
