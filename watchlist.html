@@ -4,110 +4,165 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>自选股 13年个股温度计 - 私密看板</title>
+        <title>自选股 13年历史温度波动看板</title>
         <style>
-            body { font-family: -apple-system, sans-serif; background: #f4f7f9; padding: 20px; }
-            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-            .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+            body { font-family: -apple-system, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+            .header { text-align: center; margin-bottom: 40px; }
+            .card { background: white; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
             .card img { width: 100%; border-radius: 8px; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .warning { color: #b22222; font-size: 14px; font-weight: bold; }
+            .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+            .temp-tag { padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+            .low { background: #e6f7ed; color: #27ae60; }
+            .mid { background: #fff9e6; color: #f1c40f; }
+            .high { background: #fdf2f2; color: #e74c3c; }
+            h1 { color: #b22222; }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>17只自选股：13年维度个股温度计</h1>
-            <p class="warning">⚠️ 此页面包含个人持仓敏感信息，请勿公开传播</p>
+            <h1>📊 自选股 13年历史温度波动复盘</h1>
+            <p>基于 50% PE 百分位 + 50% PB 百分位 综合建模</p>
         </div>
-        <div class="grid">
     
-            <div class="card">
-                <img src="stock_charts/600016.png" alt="民生银行">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：绝对冰点</div>
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">广和通 (300638)</span>
+                <span class="temp-tag low">当前温度：20.9% (估值洼地)</span>
             </div>
-        
-            <div class="card">
-                <img src="stock_charts/02698.png" alt="乐舒适">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：极度低估</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/02257.png" alt="圣诺医药">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：研发冰点</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/688210.png" alt="统联精密">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：低估</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/02245.png" alt="力勤资源">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：破发寻底</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/603393.png" alt="新天然气">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：价值洼地</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/00638.png" alt="广和通-H">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：H股折价</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/06601.png" alt="朝云集团">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：底部</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/300638.png" alt="广和通">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：资产廉价</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/01177.png" alt="中国生物">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：稳健</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/000792.png" alt="盐湖股份">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：合理偏低</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/300274.png" alt="阳光电源">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：业绩支撑</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/002050.png" alt="三花智控">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：均衡</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/600773.png" alt="西藏城投">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：分化明显</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/301046.png" alt="能辉科技">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：等待反转</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/01810.png" alt="小米集团">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：情绪回升</div>
-            </div>
-        
-            <div class="card">
-                <img src="stock_charts/300487.png" alt="蓝晓科技">
-                <div style="margin-top:10px; font-weight:bold; color:#555;">状态：温和偏热</div>
-            </div>
-        
+            <img src="stock_charts/300638_history.png" alt="广和通">
         </div>
-        <div style="text-align:center; margin-top:50px; color:#aaa; font-size:12px;">数据截止：2026-03-26 | AI投研助手自动生成</div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">盐湖股份 (000792)</span>
+                <span class="temp-tag low">当前温度：21.5% (估值洼地)</span>
+            </div>
+            <img src="stock_charts/000792_history.png" alt="盐湖股份">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">新天然气 (603393)</span>
+                <span class="temp-tag low">当前温度：26.6% (估值洼地)</span>
+            </div>
+            <img src="stock_charts/603393_history.png" alt="新天然气">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">乐舒适 (02698)</span>
+                <span class="temp-tag mid">当前温度：40.8% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/02698_history.png" alt="乐舒适">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">能辉科技 (301046)</span>
+                <span class="temp-tag mid">当前温度：42.7% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/301046_history.png" alt="能辉科技">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">力勤资源 (02245)</span>
+                <span class="temp-tag mid">当前温度：51.0% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/02245_history.png" alt="力勤资源">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">西藏城投 (600773)</span>
+                <span class="temp-tag mid">当前温度：53.8% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/600773_history.png" alt="西藏城投">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">民生银行 (600016)</span>
+                <span class="temp-tag mid">当前温度：57.0% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/600016_history.png" alt="民生银行">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">中国生物 (01177)</span>
+                <span class="temp-tag mid">当前温度：59.2% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/01177_history.png" alt="中国生物">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">统联精密 (688210)</span>
+                <span class="temp-tag mid">当前温度：59.7% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/688210_history.png" alt="统联精密">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">朝云集团 (06601)</span>
+                <span class="temp-tag mid">当前温度：64.5% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/06601_history.png" alt="朝云集团">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">蓝晓科技 (300487)</span>
+                <span class="temp-tag mid">当前温度：68.7% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/300487_history.png" alt="蓝晓科技">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">阳光电源 (300274)</span>
+                <span class="temp-tag mid">当前温度：69.9% (均衡区间)</span>
+            </div>
+            <img src="stock_charts/300274_history.png" alt="阳光电源">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">圣诺医药 (02257)</span>
+                <span class="temp-tag high">当前温度：77.4% (高位警戒)</span>
+            </div>
+            <img src="stock_charts/02257_history.png" alt="圣诺医药">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">广和通-H (00638)</span>
+                <span class="temp-tag high">当前温度：80.0% (高位警戒)</span>
+            </div>
+            <img src="stock_charts/00638_history.png" alt="广和通-H">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">三花智控 (002050)</span>
+                <span class="temp-tag high">当前温度：84.2% (高位警戒)</span>
+            </div>
+            <img src="stock_charts/002050_history.png" alt="三花智控">
+        </div>
+        
+        <div class="card">
+            <div class="meta">
+                <span style="font-size: 20px; font-weight: bold;">小米集团 (01810)</span>
+                <span class="temp-tag high">当前温度：84.7% (高位警戒)</span>
+            </div>
+            <img src="stock_charts/01810_history.png" alt="小米集团">
+        </div>
+        
+        <div style="text-align:center; padding:40px; color:#999; font-size:13px;">
+            AI 投研助理 | 13年数据回测 | 内部私密看板
+        </div>
     </body>
     </html>
     
