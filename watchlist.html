@@ -4,156 +4,126 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>自选股 4D 深度温度计看板</title>
+        <title>自选股 Pro 4.0 深度画像</title>
         <style>
-            body { font-family: -apple-system, sans-serif; background: #f4f6f9; padding: 20px; }
-            .header { text-align: center; margin-bottom: 50px; border-bottom: 2px solid #b22222; padding-bottom: 20px; }
-            .card { background: white; border-radius: 24px; padding: 35px; margin-bottom: 50px; box-shadow: 0 15px 45px rgba(0,0,0,0.1); }
-            .card img { width: 100%; border-radius: 12px; margin-top: 20px; }
-            .meta { font-size: 26px; font-weight: bold; color: #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
-            .tag { background: #fff5f5; border: 1px solid #ffcccc; padding: 5px 20px; border-radius: 40px; color: #b22222; font-size: 16px; }
-            h1 { color: #b22222; margin-bottom: 10px; }
+            body { font-family: -apple-system, sans-serif; background: #f0f2f5; padding: 15px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; }
+            .stock-info { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+            .stock-name { font-size: 24px; font-weight: bold; color: #1a1a1a; }
+            .radar-container { display: flex; flex-direction: column; align-items: center; }
+            .radar-img { width: 100%; max-width: 400px; }
+            .summary { background: #fff5f5; padding: 10px; border-radius: 10px; color: #b22222; font-size: 14px; margin-top: 10px; text-align: center; }
+            .footer-tag { font-size: 12px; color: #999; text-align: center; margin-top: 50px; }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>🛡️ 自选股：4D 深度复盘系统</h1>
-            <p>【价格 + 4D 综合温度 + 2D 资产锚定】13Y 历史对标</p>
+            <h1 style="color:#b22222;">🛡️ 自选股 Pro 4.0 深度画像</h1>
+            <p>基于【筹码+杠杆+估值+情绪+趋势】五维模型</p>
         </div>
     
         <div class="card">
-            <div class="meta">
-                <span>广和通-H (00638)</span>
-                <span class="tag">4D 综合温度：24.6%</span>
+            <div class="stock-info">
+                <span class="stock-name">统联精密 (688210)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/00638_pro_v3.png" alt="广和通-H">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/688210_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：27.5 | 筹码分：55.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>圣诺医药-B (02257)</span>
-                <span class="tag">4D 综合温度：28.9%</span>
+            <div class="stock-info">
+                <span class="stock-name">新天然气 (603393)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/02257_pro_v3.png" alt="圣诺医药-B">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/603393_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：2.0 | 筹码分：75.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>民生银行 (600016)</span>
-                <span class="tag">4D 综合温度：51.1%</span>
+            <div class="stock-info">
+                <span class="stock-name">盐湖股份 (000792)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/600016_pro_v3.png" alt="民生银行">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/000792_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：2.0 | 筹码分：55.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>能辉科技 (301046)</span>
-                <span class="tag">4D 综合温度：51.4%</span>
+            <div class="stock-info">
+                <span class="stock-name">西藏城投 (600773)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/301046_pro_v3.png" alt="能辉科技">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/600773_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：0.4 | 筹码分：55.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>中国生物制药 (01177)</span>
-                <span class="tag">4D 综合温度：54.7%</span>
+            <div class="stock-info">
+                <span class="stock-name">民生银行 (600016)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/01177_pro_v3.png" alt="中国生物制药">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/600016_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：45.5 | 筹码分：55.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>小米集团 (01810)</span>
-                <span class="tag">4D 综合温度：71.3%</span>
+            <div class="stock-info">
+                <span class="stock-name">蓝晓科技 (300487)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/01810_pro_v3.png" alt="小米集团">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/300487_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：9.5 | 筹码分：75.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>蓝晓科技 (300487)</span>
-                <span class="tag">4D 综合温度：74.4%</span>
+            <div class="stock-info">
+                <span class="stock-name">三花智控 (002050)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/300487_pro_v3.png" alt="蓝晓科技">
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/002050_radar.png" class="radar-img">
+            </div>
+            <div class="summary">
+                当前估值分：16.9 | 筹码分：55.0
+            </div>
         </div>
         
         <div class="card">
-            <div class="meta">
-                <span>统联精密 (688210)</span>
-                <span class="tag">4D 综合温度：76.6%</span>
+            <div class="stock-info">
+                <span class="stock-name">阳光电源 (300274)</span>
+                <span style="color:#b22222; font-weight:bold;">深度扫描：合格</span>
             </div>
-            <img src="stock_charts_pro_v3/688210_pro_v3.png" alt="统联精密">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>广和通 (300638)</span>
-                <span class="tag">4D 综合温度：78.8%</span>
+            <div class="radar-container">
+                <img src="stock_charts_pro_v4/300274_radar.png" class="radar-img">
             </div>
-            <img src="stock_charts_pro_v3/300638_pro_v3.png" alt="广和通">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>朝云集团 (06601)</span>
-                <span class="tag">4D 综合温度：79.8%</span>
+            <div class="summary">
+                当前估值分：10.8 | 筹码分：55.0
             </div>
-            <img src="stock_charts_pro_v3/06601_pro_v3.png" alt="朝云集团">
         </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>力勤资源 (02245)</span>
-                <span class="tag">4D 综合温度：82.0%</span>
-            </div>
-            <img src="stock_charts_pro_v3/02245_pro_v3.png" alt="力勤资源">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>盐湖股份 (000792)</span>
-                <span class="tag">4D 综合温度：83.6%</span>
-            </div>
-            <img src="stock_charts_pro_v3/000792_pro_v3.png" alt="盐湖股份">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>新天然气 (603393)</span>
-                <span class="tag">4D 综合温度：84.8%</span>
-            </div>
-            <img src="stock_charts_pro_v3/603393_pro_v3.png" alt="新天然气">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>西藏城投 (600773)</span>
-                <span class="tag">4D 综合温度：85.4%</span>
-            </div>
-            <img src="stock_charts_pro_v3/600773_pro_v3.png" alt="西藏城投">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>三花智控 (002050)</span>
-                <span class="tag">4D 综合温度：85.7%</span>
-            </div>
-            <img src="stock_charts_pro_v3/002050_pro_v3.png" alt="三花智控">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>阳光电源 (300274)</span>
-                <span class="tag">4D 综合温度：89.4%</span>
-            </div>
-            <img src="stock_charts_pro_v3/300274_pro_v3.png" alt="阳光电源">
-        </div>
-        
-        <div class="card">
-            <div class="meta">
-                <span>乐舒适 (02698)</span>
-                <span class="tag">4D 综合温度：91.6%</span>
-            </div>
-            <img src="stock_charts_pro_v3/02698_pro_v3.png" alt="乐舒适">
-        </div>
-        </body></html>
+        <div class="footer-tag">数据源：Choice / iFinD / AkShare <br> 更新时间：2026-03-26 14:03</div></body></html>
