@@ -48,6 +48,6 @@ jobs:
         run: |
           git config --global user.name "MarketBot"
           git config --global user.email "bot@market.com"
-          git add index.html watchlist.html stock_charts_pro_v3/*.png charts/*.png
+          git add index.html watchlist.html pe_pb_2013_2026.csv *.png stock_charts_pro_v3/*.png charts/*.png || true
           git commit -m "Auto Update: Market & Individual Stock Pro 3.0 [$(date)]" || exit 0
           git push origin main

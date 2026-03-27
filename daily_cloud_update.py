@@ -123,5 +123,31 @@ def main():
     plt.savefig("market_temp_4D_Stacked_Large.png", dpi=140)
     print("Plots generated.")
 
+    # 4. Update index.html
+    update_index_html(today_str)
+
+def update_index_html(today_str):
+    html_file = 'index.html'
+    if not os.path.exists(html_file):
+        print("Missing index.html. Skipping update.")
+        return
+    
+    with open(html_file, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Update Report Date
+    import re
+    date_pattern = r'🗓️ 报告日期：.*? \| 数据截止：.*?'
+    new_date_str = f'🗓️ 报告日期：{today_str} | 数据截止：{today_str}' # simplified for now
+    content = re.sub(date_pattern, new_date_str, content)
+    
+    # Ensure images are using local relative paths
+    content = re.sub(r'src="https://comein-files.*?alt="13年周期对比图"', 'src="market_temp_full_comparison_final.png" alt="13年周期对比图"', content)
+    content = re.sub(r'src="https://comein-files.*?alt="宏观堆叠图"', 'src="market_temp_4D_Stacked_Large.png" alt="宏观堆叠图"', content)
+    
+    with open(html_file, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print("index.html updated with latest date and local image paths.")
+
 if __name__ == "__main__":
     main()

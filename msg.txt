@@ -1,0 +1,1 @@
+Fix GitHub Actions write permission to allow pushing results back to repo.
