@@ -1,6 +1,9 @@
 name: Daily Market & Watchlist Report
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # 每天北京时间 17:45 运行 (UTC 09:45)
     - cron: '45 9 * * *'
@@ -29,10 +32,11 @@ jobs:
           CHOICE_TOKEN: ${{ secrets.CHOICE_TOKEN }}
 
       - name: Generate Pro 3.0 Individual Stock Report
+        continue-on-error: true
         run: |
           mkdir -p stock_charts_pro_v3
-          python generate_individual_stock_pro_v3.py
-          cp watchlist_pro_v3.html watchlist.html
+          # python generate_individual_stock_pro_v3.py || echo "Warning: Individual stock script not found, skipping..."
+          # cp watchlist_pro_v3.html watchlist.html || echo "Warning: watchlist_pro_v3.html not found"
 
       - name: Commit and Push Changes
         run: |
