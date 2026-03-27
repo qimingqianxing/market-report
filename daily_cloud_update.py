@@ -15,60 +15,41 @@ def get_today_data():
     today_str = datetime.datetime.now().strftime("%Y-%m-%d")
     print(f"[{today_str}] Starting Cloud Update...")
     
-    # 1. PE/PB (Primary: MX API, Backup: AkShare)
-    pe, pb = None, None
+    # 1. PE/PB (Primary: MX API)
+    pe, pb = 21.66, 1.80 # Default to recent known values for 000985
     try:
         url = "https://mkapi2.dfcfs.com/finskillshub/api/claw/query"
-        apikey = "mkt_Zfo3aEhBQ1R4cj3GLsSvZ74lJGpF3quBoTlevpWeloQ"
+        apikey = os.environ.get('MX_APIKEY', "mkt_Zfo3aEhBQ1R4cj3GLsSvZ74lJGpF3quBoTlevpWeloQ")
         headers = {"apikey": apikey, "Content-Type": "application/json"}
         payload = {"toolQuery": "查询中证全指pe,pb,当前数据"}
         r = requests.post(url, headers=headers, json=payload, timeout=20)
-        print(f"Debug: type(r) is {type(r)}, value is {r}")
-        if not hasattr(r, 'json'):
-            if isinstance(r, tuple) and len(r) > 0:
-                r = r[0]
-        
         resp_json = r.json()
+        
         data = resp_json['data']['data']['searchDataResultDTO']['dataTableDTOList'][0]['table']
         ids = [k for k in data.keys() if k != 'headName']
         v1, v2 = float(data[ids[0]][0]), float(data[ids[1]][0])
         pe, pb = (v1, v2) if v1 > v2 else (v2, v1)
         print(f"MX API Success: PE={pe}, PB={pb}")
     except Exception as e:
-        print(f"MX API Fail: {e}. Trying AkShare...")
-        try:
-            # AkShare backup logic (simplistic proxy for 000985)
-            # You can refine this to get specific CSI index PE/PB if AkShare supports it
-            pe, pb = 16.5, 1.3 
-        except: pass
+        print(f"MX API Fail: {e}. Using fallback values.")
 
     # 2. 10Y Bond Yield (China)
-    bond_yield = 2.45
+    bond_yield = 2.25
     try:
-        if hasattr(ak, 'bond_china_yield'):
-            df_yield = ak.bond_china_yield(start_date="20260101")
+        df_yield = ak.bond_china_yield(start_date="20240101")
+        if not df_yield.empty:
             bond_yield = float(df_yield.iloc[-1]['10年'])
-        elif hasattr(ak, 'bond_zh_us_rate'):
-             df_yield = ak.bond_zh_us_rate() # Some versions use this
-             bond_yield = float(df_yield.iloc[-1]['中债10年期'])
-    except Exception as e:
-        print(f"Bond Yield Fail: {e}")
+            print(f"Bond Yield Success: {bond_yield}")
+    except:
+        print("Bond Yield Fail. Using default.")
 
-    # 3. Margin Balance (Proxy)
-    margin_val = 15000 # 1.5 Trillion approx
-    try:
-        df_margin = ak.stock_margin_sh()
-        margin_val = float(df_margin.iloc[-1]['rzye']) / 1e8
-    except: pass
-
-    return today_str, pe, pb, bond_yield, margin_val
+    return today_str, pe, pb, bond_yield
 
 def main():
-    today_str, pe, pb, bond_y, margin_b = get_today_data()
+    today_str, pe, pb, bond_y = get_today_data()
     
     csv_file = 'pe_pb_2013_2026.csv'
     if not os.path.exists(csv_file):
-        print("Missing CSV in cloud. Initializing...")
         df = pd.DataFrame(columns=['date', 'pe', 'pb'])
     else:
         df = pd.read_csv(csv_file)
@@ -89,9 +70,8 @@ def main():
     df['erp'] = (1.0 / df['pe']) - (bond_y / 100.0)
     df['erp_pct'] = df['erp'].rank(pct=True) * 100
     
-    # Simple proxies for cloud sentiment/breadth
-    df['sentiment'] = (df['pb'].rank(pct=True) * 100 + 60) / 2 # simplified
-    df['breadth'] = (df['pe'].rank(pct=True) * 100 + 40) / 2 # simplified
+    df['sentiment'] = (df['pb_pct'] + 60) / 2
+    df['breadth'] = (df['pe_pct'] + 40) / 2
     df['total_temp'] = df['pe_pct']*0.3 + (100-df['erp_pct'])*0.3 + df['sentiment']*0.2 + df['breadth']*0.2
 
     # --- Plot 1: Comparison ---
@@ -104,7 +84,6 @@ def main():
     for ax in [ax1, ax2]:
         ax.xaxis.set_major_locator(mdates.YearLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
-        ax.tick_params(axis='x', which='major', pad=25)
         ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig("market_temp_full_comparison_final.png", dpi=140)
@@ -123,31 +102,23 @@ def main():
     plt.savefig("market_temp_4D_Stacked_Large.png", dpi=140)
     print("Plots generated.")
 
-    # 4. Update index.html
     update_index_html(today_str)
 
 def update_index_html(today_str):
     html_file = 'index.html'
-    if not os.path.exists(html_file):
-        print("Missing index.html. Skipping update.")
-        return
-    
-    with open(html_file, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    # Update Report Date
+    if not os.path.exists(html_file): return
+    with open(html_file, 'r', encoding='utf-8') as f: content = f.read()
     import re
     date_pattern = r'🗓️ 报告日期：.*? \| 数据截止：.*?'
-    new_date_str = f'🗓️ 报告日期：{today_str} | 数据截止：{today_str}' # simplified for now
+    new_date_str = f'🗓️ 报告日期：{today_str} | 数据截止：{today_str}'
     content = re.sub(date_pattern, new_date_str, content)
-    
-    # Ensure images are using local relative paths
     content = re.sub(r'src="https://comein-files.*?alt="13年周期对比图"', 'src="market_temp_full_comparison_final.png" alt="13年周期对比图"', content)
+    content = re.sub(r'src="https://comein-files.*?alt="4D报告图"', 'src="market_temp_4D_Stacked_Large.png" alt="4D报告图"', content)
+    # Also handle the specific case if alt text changed
     content = re.sub(r'src="https://comein-files.*?alt="宏观堆叠图"', 'src="market_temp_4D_Stacked_Large.png" alt="宏观堆叠图"', content)
-    
-    with open(html_file, 'w', encoding='utf-8') as f:
-        f.write(content)
-    print("index.html updated with latest date and local image paths.")
+
+    with open(html_file, 'w', encoding='utf-8') as f: f.write(content)
+    print("index.html updated.")
 
 if __name__ == "__main__":
     main()

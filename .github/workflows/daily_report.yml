@@ -31,7 +31,7 @@ jobs:
       - name: Generate Macro 4D Report
         run: python daily_cloud_update.py
         env:
-          CHOICE_TOKEN: ${{ secrets.CHOICE_TOKEN }}
+          MX_APIKEY: ${{ secrets.MX_APIKEY }}
 
       - name: Generate Pro 3.0 Individual Stock Report
         continue-on-error: true
