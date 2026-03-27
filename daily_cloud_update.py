@@ -23,7 +23,13 @@ def get_today_data():
         headers = {"apikey": apikey, "Content-Type": "application/json"}
         payload = {"toolQuery": "查询中证全指pe,pb,当前数据"}
         r = requests.post(url, headers=headers, json=payload, timeout=20)
-        data = r.json()['data']['data']['searchDataResultDTO']['dataTableDTOList'][0]['table']
+        print(f"Debug: type(r) is {type(r)}, value is {r}")
+        if not hasattr(r, 'json'):
+            if isinstance(r, tuple) and len(r) > 0:
+                r = r[0]
+        
+        resp_json = r.json()
+        data = resp_json['data']['data']['searchDataResultDTO']['dataTableDTOList'][0]['table']
         ids = [k for k in data.keys() if k != 'headName']
         v1, v2 = float(data[ids[0]][0]), float(data[ids[1]][0])
         pe, pb = (v1, v2) if v1 > v2 else (v2, v1)

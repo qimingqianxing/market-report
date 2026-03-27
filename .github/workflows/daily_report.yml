@@ -46,4 +46,4 @@ jobs:
           git config --global user.email "bot@market.com"
           git add index.html watchlist.html stock_charts_pro_v3/*.png charts/*.png
           git commit -m "Auto Update: Market & Individual Stock Pro 3.0 [$(date)]" || exit 0
-          git push
+          git push origin main
