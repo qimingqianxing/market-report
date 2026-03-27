@@ -37,8 +37,12 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p stock_charts_pro_v3
-          # python generate_individual_stock_pro_v3.py || echo "Warning: Individual stock script not found, skipping..."
-          # cp watchlist_pro_v3.html watchlist.html || echo "Warning: watchlist_pro_v3.html not found"
+          if [ -f generate_individual_stock_pro_v3.py ]; then
+            python generate_individual_stock_pro_v3.py
+            cp watchlist_pro_v3.html watchlist.html
+          else
+            echo "generate_individual_stock_pro_v3.py not found, skipping..."
+          fi
 
       - name: Commit and Push Changes
         run: |

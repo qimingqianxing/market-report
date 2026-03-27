@@ -45,9 +45,14 @@ def get_today_data():
     # 2. 10Y Bond Yield (China)
     bond_yield = 2.45
     try:
-        df_yield = ak.bond_china_yield(start_date="20260101")
-        bond_yield = float(df_yield.iloc[-1]['10年'])
-    except: pass
+        if hasattr(ak, 'bond_china_yield'):
+            df_yield = ak.bond_china_yield(start_date="20260101")
+            bond_yield = float(df_yield.iloc[-1]['10年'])
+        elif hasattr(ak, 'bond_zh_us_rate'):
+             df_yield = ak.bond_zh_us_rate() # Some versions use this
+             bond_yield = float(df_yield.iloc[-1]['中债10年期'])
+    except Exception as e:
+        print(f"Bond Yield Fail: {e}")
 
     # 3. Margin Balance (Proxy)
     margin_val = 15000 # 1.5 Trillion approx
