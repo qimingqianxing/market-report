@@ -116,8 +116,31 @@ def run_report():
     # Plotting
     plot_2d_and_4d(df)
     
+    # 5. Update index.html
+    update_html(latest)
+    
     # Save CSV back just in case
     df.to_csv(csv_path, index=False)
+
+def update_html(latest):
+    html_path = 'index.html'
+    if not os.path.exists(html_path):
+        return
+    
+    with open(html_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    today_str = datetime.datetime.now().strftime("%Y-%m-%d")
+    cutoff_str = latest['date'].strftime("%Y-%m-%d")
+    
+    # Update date tag
+    import re
+    new_tag = f'<div class="date-tag">🗓️ 报告日期：{today_str} | 数据截止：{cutoff_str}</div>'
+    content = re.sub(r'<div class="date-tag">.*?</div>', new_tag, content)
+    
+    with open(html_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print("HTML updated.")
 
 def plot_2d_and_4d(df):
     # Chart 1: 2D Temperature (PE/PB Comparison)
