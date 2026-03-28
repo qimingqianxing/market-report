@@ -16,17 +16,16 @@
         .footer { text-align: center; margin-top: 80px; color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 30px; }
         h3 { text-align: center; color: #444; margin-top: 40px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
     </style>
-<!-- Build Trigger: 2026-03-28 11:18 -->
 </head>
 <body>
     <div class="container">
         <h1>A股股市温度计日报</h1>
-        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-28</div>
+        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-27</div>
 
         <div class="section">
             <div class="section-title">📊 1. 2D 温度计 (PE/PB 极简版)</div>
             <img class="report-img" src="market_temp_full_comparison_final.png" alt="2D Comparison">
-            <div class="desc"><strong>解读：</strong> 经典PE/PB分位。用于观察市场整体估值水位。</div>
+            <div class="desc"><strong>模型解读：</strong> 经典估值分位。包含 PE 和 PB 的历史分位叠加。</div>
         </div>
 
         <div class="section">
@@ -47,17 +46,23 @@
             <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment">
         </div>
 
-        
-        
         <div class="section">
             <div class="section-title">📈 3. 温度计 vs 指数走势对比</div>
-            <div class="chart-container" style="text-align: center;">
-                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">灰色曲线代表中证全指价格，黑色曲线代表 4D 综合温度。观察两者背离或同步性。</p>
-                <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison" style="width: 100%; max-width: 900px;">
-            </div>
+            <p style="text-align:center; color:#666;">黑色实线：4D温度 | 灰色实线：价格 | 蓝色虚线：PE分位</p>
+            <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison">
         </div>
-    
-    
-    
+
+        <div class="section">
+            <div class="section-title">📡 4. 前瞻雷达：价格 vs 杠杆情绪与广度</div>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                <strong>雷达 A (红色)</strong>: 两融杠杆资金意愿。
+                <br>
+                <strong>雷达 B (绿色)</strong>: 站上 20 日均线个股占比（真实广度）。背离信号预示动能枯竭。
+            </p>
+            <img class="report-img" src="forward_radar_multi.png" alt="Radar">
+        </div>
+
+        <div class="footer">本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议</div>
+    </div> <!-- Close Container -->
 </body>
 </html>
