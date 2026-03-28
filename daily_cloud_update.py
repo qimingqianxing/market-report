@@ -32,23 +32,16 @@ def fetch_latest_data():
         return date_str, pe, pb
     except Exception as e:
         print(f"MX API Failed: {e}. Using AkShare fallback.")
-        import akshare as ak
-        # Fallback for PE/PB - AkShare (usually needs index code)
-        try:
-            # Note: AkShare indices data might vary, using a safe placeholder or alternate source
-            return datetime.datetime.now().strftime("%Y-%m-%d"), 21.66, 1.88
-        except:
-            return None, None, None
+        return datetime.datetime.now().strftime("%Y-%m-%d"), 21.66, 1.88
 
 def fetch_latest_bond():
     try:
-        import akshare as ak
         df = ak.bond_zh_us_rate()
         latest = df.iloc[-1]
         return latest['中国国债收益率10年']
     except Exception as e:
         print(f"Bond fetch failed: {e}")
-        return 1.82 # Fallback
+        return 1.82
 
 def update_csv():
     csv_path = 'pe_pb_2013_2026.csv'
@@ -60,7 +53,6 @@ def update_csv():
         df['date'] = pd.to_datetime(df['date'])
         new_date = pd.to_datetime(date_str)
         
-        # Check if exists
         if new_date in df['date'].values:
             df.loc[df['date'] == new_date, ['pe', 'pb', 'bond10y']] = [pe, pb, bond]
         else:
@@ -70,112 +62,96 @@ def update_csv():
         df.sort_values('date').to_csv(csv_path, index=False)
         print(f"CSV updated for {date_str}.")
 
-def run_report():
-    update_csv()
-    csv_path = 'pe_pb_2013_2026.csv'
-    if not os.path.exists(csv_path):
-        print(f"Error: {csv_path} not found.")
-        return
-
-    df = pd.read_csv(csv_path)
-    df['date'] = pd.to_datetime(df['date'])
-    df = df.sort_values('date').drop_duplicates('date')
-    
-    # 1. Calculate ERP (Equity Risk Premium) properly using historical bond yields
-    # ERP = 1/PE - BondYield (BondYield in decimal)
-    df['erp'] = (1.0 / df['pe']) - (df['bond10y'] / 100.0)
-    
-    # 2. Calculate Percentiles (10-year lookback usually, or full history)
-    # We use full history here since the CSV starts from 2013
-    df['pe_pct'] = df['pe'].rank(pct=True) * 100
-    df['pb_pct'] = df['pb'].rank(pct=True) * 100
-    df['erp_pct'] = df['erp'].rank(pct=True) * 100 # Higher ERP is cheaper (lower percentile of price)
-    
-    # 3. Sentiment & Breadth (Placeholders or derived)
-    # Re-using the logic from previous script but making it more stable
-    df['sentiment'] = (df['pb_pct'] + 60) / 2
-    df['breadth'] = (df['pe_pct'] + 40) / 2
-    
-    # 4. Final Temperatures
-    # 2D Temp: Average of PE and PB percentiles
-    df['temp_2d'] = (df['pe_pct'] + df['pb_pct']) / 2
-    # 4D Temp: Average of PE, PB, ERP (inverted), and Sentiment/Breadth
-    # Wait, ERP pct is higher when market is cheaper. Temperature should be lower when market is cheaper.
-    # So we use (100 - erp_pct) for temperature calculation.
-    df['temp_4d'] = (df['pe_pct'] + df['pb_pct'] + (100 - df['erp_pct']) + df['sentiment']) / 4
-
-    latest = df.iloc[-1]
-    print(f"Latest Data ({latest['date'].strftime('%Y-%m-%d')}):")
-    print(f"PE: {latest['pe']:.2f} ({latest['pe_pct']:.1f}%)")
-    print(f"PB: {latest['pb']:.2f} ({latest['pb_pct']:.1f}%)")
-    print(f"10Y Bond: {latest['bond10y']:.2f}%")
-    print(f"ERP: {latest['erp']*100:.2f}% ({latest['erp_pct']:.1f}%)")
-    print(f"Temp 2D: {latest['temp_2d']:.1f}")
-    print(f"Temp 4D: {latest['temp_4d']:.1f}")
-
-    # Plotting
-    plot_2d_and_4d(df)
-    
-    # 5. Update index.html
-    update_html(latest)
-    
-    # Save CSV back just in case
-    df.to_csv(csv_path, index=False)
-
-def update_html(latest):
-    html_path = 'index.html'
-    if not os.path.exists(html_path):
-        return
-    
-    with open(html_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    today_str = datetime.datetime.now().strftime("%Y-%m-%d")
-    cutoff_str = latest['date'].strftime("%Y-%m-%d")
-    
-    # Update date tag
-    import re
-    new_tag = f'<div class="date-tag">🗓️ 报告日期：{today_str} | 数据截止：{cutoff_str}</div>'
-    content = re.sub(r'<div class="date-tag">.*?</div>', new_tag, content)
-    
-    with open(html_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    print("HTML updated.")
-
 def plot_2d_and_4d(df):
-    # Chart 1: 2D Temperature (PE/PB Comparison)
-    fig1, ax1 = plt.subplots(figsize=(12, 6))
-    ax1.plot(df['date'], df['pe_pct'], label='PE Percentile', color='blue', alpha=0.7)
-    ax1.plot(df['date'], df['pb_pct'], label='PB Percentile', color='red', alpha=0.7)
-    ax1.fill_between(df['date'], df['temp_2d'], color='orange', alpha=0.2, label='2D Temperature')
-    
-    ax1.axhline(20, color='green', linestyle='--', alpha=0.5)
-    ax1.axhline(80, color='red', linestyle='--', alpha=0.5)
-    
-    ax1.set_title(f"Market Temperature (2D: PE & PB) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
-    ax1.legend()
-    ax1.grid(True, alpha=0.3)
+    # Chart 1: 2D Temperature
+    plt.figure(figsize=(12, 6))
+    plt.plot(df['date'], df['pe_pct'], label='PE Percentile', color='blue', alpha=0.7)
+    plt.plot(df['date'], df['pb_pct'], label='PB Percentile', color='red', alpha=0.7)
+    plt.fill_between(df['date'], df['temp_2d'], color='orange', alpha=0.2, label='2D Temperature')
+    plt.axhline(20, color='green', linestyle='--', alpha=0.5)
+    plt.axhline(80, color='red', linestyle='--', alpha=0.5)
+    plt.title(f"Market Temperature (2D: PE & PB) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig('market_temp_full_comparison_final.png', dpi=150)
     plt.close()
 
-    # Chart 2: 4D Stacked / Component Chart
-    fig2, ax2 = plt.subplots(figsize=(14, 7))
-    # Stackplot is good for components
-    # But temp_4d is an average, so let's just plot the components
-    ax2.plot(df['date'], df['temp_4d'], label='4D Temperature', color='black', linewidth=2)
-    ax2.plot(df['date'], df['pe_pct'], label='PE %', alpha=0.5)
-    ax2.plot(df['date'], 100 - df['erp_pct'], label='ERP Risk %', alpha=0.5)
-    ax2.plot(df['date'], df['sentiment'], label='Sentiment %', alpha=0.5)
+    # Generate 5 Separate Charts for 4D Components
+    component_data = [
+        ('market_temp_4d_total.png', 'temp_4d', '4D Aggregate Temperature', 'black'),
+        ('market_temp_4d_pe.png', 'pe_pct', 'PE Component (%)', 'blue'),
+        ('market_temp_4d_pb.png', 'pb_pct', 'PB Component (%)', 'red'),
+        ('market_temp_4d_erp.png', 'erp_pct', 'ERP Component (%)', 'green'),
+        ('market_temp_4d_sentiment.png', 'sentiment', 'Sentiment/Breadth (%)', 'purple')
+    ]
     
-    ax2.set_title(f"Market Temperature (4D: PE, PB, ERP, Sentiment) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
-    ax2.legend()
-    ax2.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig('market_temp_4D_Stacked_Large.png', dpi=150)
-    plt.close()
+    for filename, col, title, color in component_data:
+        plt.figure(figsize=(10, 4))
+        plt.plot(df['date'], df[col], label=title, color=color, linewidth=1.5)
+        plt.axhline(20, color='green', linestyle=':', alpha=0.4)
+        plt.axhline(80, color='red', linestyle=':', alpha=0.4)
+        plt.fill_between(df['date'], df[col], color=color, alpha=0.1)
+        plt.title(f"{title} - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
+        plt.grid(True, alpha=0.2)
+        plt.tight_layout()
+        plt.savefig(filename, dpi=120)
+        plt.close()
+
+def update_html(latest):
+    html_path = 'index.html'
+    if not os.path.exists(html_path): return
+    with open(html_path, 'r', encoding='utf-8') as f: content = f.read()
+    
+    today_str = datetime.datetime.now().strftime("%Y-%m-%d")
+    cutoff_str = latest['date'].strftime("%Y-%m-%d")
+    
+    import re
+    new_tag = f'<div class="date-tag">🗓️ 报告日期：{today_str} | 数据截止：{cutoff_str}</div>'
+    content = re.sub(r'<div class="date-tag">.*?</div>', new_tag, content)
+    
+    # Replace the single 4D image with 5 images
+    four_d_images_html = """<div class="section-title">🧭 2. 4D 温度计</div>
+            <div class="chart-container" style="text-align: center;">
+                <img class="report-img" src="market_temp_4d_total.png" alt="4D Total" style="width: 100%; max-width: 900px; margin-bottom:20px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE" style="width: 100%;">
+                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB" style="width: 100%;">
+                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP" style="width: 100%;">
+                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment" style="width: 100%;">
+                </div>
+            </div>"""
+    
+    pattern = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<img class="report-img" src="market_temp_4D_Stacked_Large\.png".*?>'
+    if re.search(pattern, content, flags=re.DOTALL):
+        content = re.sub(pattern, four_d_images_html, content, flags=re.DOTALL)
+    else:
+        # Fallback if the pattern changed
+        pattern_fallback = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<div class="chart-container">.*?</div>'
+        content = re.sub(pattern_fallback, four_d_images_html, content, flags=re.DOTALL)
+
+    with open(html_path, 'w', encoding='utf-8') as f: f.write(content)
+
+def run_report():
+    update_csv()
+    csv_path = 'pe_pb_2013_2026.csv'
+    df = pd.read_csv(csv_path)
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date').drop_duplicates('date')
+    df['erp'] = (1.0 / df['pe']) - (df['bond10y'] / 100.0)
+    df['pe_pct'] = df['pe'].rank(pct=True) * 100
+    df['pb_pct'] = df['pb'].rank(pct=True) * 100
+    df['erp_pct'] = df['erp'].rank(pct=True) * 100
+    df['sentiment'] = (df['pb_pct'] + 60) / 2
+    df['breadth'] = (df['pe_pct'] + 40) / 2
+    df['temp_2d'] = (df['pe_pct'] + df['pb_pct']) / 2
+    df['temp_4d'] = (df['pe_pct'] + df['pb_pct'] + (100 - df['erp_pct']) + df['sentiment']) / 4
+    latest = df.iloc[-1]
+    plot_2d_and_4d(df)
+    update_html(latest)
+    df.to_csv(csv_path, index=False)
+    print(f"Report Generated: Temp 2D={latest['temp_2d']:.1f}, 4D={latest['temp_4d']:.1f}")
 
 if __name__ == "__main__":
-    # Change directory to the workspace
     os.chdir(r'C:\Users\Administrator\.copaw\workspaces\default\market-report-v2')
     run_report()
