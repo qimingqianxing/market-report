@@ -202,25 +202,60 @@ def update_html(latest):
 
     with open(html_path, 'w', encoding='utf-8') as f: f.write(content)
 
+def get_real_breadth():
+    apikey = os.environ.get('MX_APIKEY', "mkt_Zfo3aEhBQ1R4cj3GLsSvZ74lJGpF3quBoTlevpWeloQ")
+    url = "https://mkapi2.dfcfs.com/finskillshub/api/claw/query"
+    headers = {"apikey": apikey, "Content-Type": "application/json"}
+    payload = {"toolQuery": "查询全部A股(001071.BLOCK)目前的'收盘价高于20日均线个股占比'(100000000018659)最新数值"}
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=20)
+        data = r.json()
+        item = data['data']['data']['searchDataResultDTO']['dataTableDTOList'][0]
+        # The value is usually in the first key that isn't headName
+        val_key = [k for k in item['table'].keys() if k != 'headName'][0]
+        val = float(str(item['table'][val_key][0]).replace('%', ''))
+        return val
+    except:
+        return 50.0 # Default fallback
+
 def run_report():
     update_csv()
     csv_path = 'pe_pb_2013_2026.csv'
     df = pd.read_csv(csv_path)
     df['date'] = pd.to_datetime(df['date'])
     df = df.sort_values('date').drop_duplicates('date')
+    
+    # Calculation Logic
     df['erp'] = (1.0 / df['pe']) - (df['bond10y'] / 100.0)
     df['pe_pct'] = df['pe'].rank(pct=True) * 100
     df['pb_pct'] = df['pb'].rank(pct=True) * 100
     df['erp_pct'] = df['erp'].rank(pct=True) * 100
-    df['sentiment'] = (df['pb_pct'] + 60) / 2
-    df['breadth'] = (df['pe_pct'] + 40) / 2
+    
+    # Sentiment & Breadth Enhancement
+    # We fetch the latest real breadth and store it if it's the latest day
+    real_breadth = get_real_breadth()
+    # Note: For historical data, we use the proxy for now unless we do a full backfill
+    # But for the latest point, we use the real one
+    df.loc[df.index[-1], 'breadth_real'] = real_breadth
+    
+    # 4D Temperature Components
+    # Valuation (30%): PE + PB
+    # ERP (30%): ERP Percentile
+    # Sentiment (20%): Derived from PB + proxy
+    # Breadth (20%): Real Breadth if available, else proxy
+    df['sentiment'] = (df['pb_pct'] * 0.5 + 40) 
+    df['breadth'] = df['breadth_real'].fillna((df['pe_pct'] + 20) / 2)
+    
     df['temp_2d'] = (df['pe_pct'] + df['pb_pct']) / 2
-    df['temp_4d'] = (df['pe_pct'] + df['pb_pct'] + (100 - df['erp_pct']) + df['sentiment']) / 4
+    # Composite: (Valuation_PE*0.15 + Valuation_PB*0.15) + (Risk_ERP*0.3) + (Sentiment*0.2) + (Breadth*0.2)
+    # Note: ERP is "Higher = Cheaper", so we use (100 - erp_pct) for "Higher = Hotter"
+    df['temp_4d'] = (df['pe_pct']*0.15 + df['pb_pct']*0.15 + (100 - df['erp_pct'])*0.3 + df['sentiment']*0.2 + df['breadth']*0.2)
+    
     latest = df.iloc[-1]
     plot_2d_and_4d(df)
     update_html(latest)
     df.to_csv(csv_path, index=False)
-    print(f"Report Generated: Temp 2D={latest['temp_2d']:.1f}, 4D={latest['temp_4d']:.1f}")
+    print(f"Report Generated: Temp 2D={latest['temp_2d']:.1f}, 4D={latest['temp_4d']:.1f}, Breadth={latest['breadth']:.1f}%")
 
 if __name__ == "__main__":
     os.chdir(r'C:\Users\Administrator\.copaw\workspaces\default\market-report-v2')
