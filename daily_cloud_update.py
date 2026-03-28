@@ -113,12 +113,25 @@ def update_html(latest):
     # Replace the single 4D image with 5 images
     four_d_images_html = """<div class="section-title">🧭 2. 4D 温度计</div>
             <div class="chart-container" style="text-align: center;">
-                <img class="report-img" src="market_temp_4d_total.png" alt="4D Total" style="width: 100%; max-width: 900px; margin-bottom:20px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE" style="width: 100%;">
-                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB" style="width: 100%;">
-                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP" style="width: 100%;">
-                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment" style="width: 100%;">
+                <div style="margin-bottom: 30px;">
+                    <h3>4D 综合温度走势 (Aggregate)</h3>
+                    <img class="report-img" src="market_temp_4d_total.png" alt="4D Total" style="width: 100%; max-width: 900px;">
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3>PE 估值维度 (Valuation)</h3>
+                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE" style="width: 100%; max-width: 900px;">
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3>PB 估值维度 (Book Value)</h3>
+                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB" style="width: 100%; max-width: 900px;">
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3>ERP 风险溢价维度 (Equity Risk Premium)</h3>
+                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP" style="width: 100%; max-width: 900px;">
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3>市场情绪/广度维度 (Sentiment & Breadth)</h3>
+                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment" style="width: 100%; max-width: 900px;">
                 </div>
             </div>"""
     
