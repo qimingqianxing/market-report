@@ -63,20 +63,16 @@ def update_csv():
         print(f"CSV updated for {date_str}.")
 
 def plot_2d_and_4d(df):
-    # Chart 1: 2D Temperature
+    # --- Chart 1: 2D Temperature ---
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.plot(df['date'], df['pe_pct'], label='PE Percentile', color='blue', alpha=0.7)
     ax.plot(df['date'], df['pb_pct'], label='PB Percentile', color='red', alpha=0.7)
     ax.fill_between(df['date'], df['temp_2d'], color='orange', alpha=0.2, label='2D Temperature')
     ax.axhline(20, color='green', linestyle='--', alpha=0.5)
     ax.axhline(80, color='red', linestyle='--', alpha=0.5)
-    
-    # Fine-grained date scale
     ax.xaxis.set_major_locator(mdates.YearLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
     ax.xaxis.set_minor_locator(mdates.MonthLocator(interval=6))
-    plt.xticks(rotation=0) # Year labels usually fit horizontally
-    
     ax.set_title(f"Market Temperature (2D: PE & PB) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
     ax.legend()
     ax.grid(True, which='major', alpha=0.4)
@@ -85,7 +81,7 @@ def plot_2d_and_4d(df):
     plt.savefig('market_temp_full_comparison_final.png', dpi=150)
     plt.close()
 
-    # Generate 5 Separate Charts for 4D Components
+    # --- Chart 2: 5 Separate 4D Components ---
     component_data = [
         ('market_temp_4d_total.png', 'temp_4d', '4D Aggregate Temperature', 'black'),
         ('market_temp_4d_pe.png', 'pe_pct', 'PE Component (%)', 'blue'),
@@ -93,25 +89,56 @@ def plot_2d_and_4d(df):
         ('market_temp_4d_erp.png', 'erp_pct', 'ERP Component (%)', 'green'),
         ('market_temp_4d_sentiment.png', 'sentiment', 'Sentiment/Breadth (%)', 'purple')
     ]
-    
     for filename, col, title, color in component_data:
         fig, ax = plt.subplots(figsize=(10, 4))
         ax.plot(df['date'], df[col], label=title, color=color, linewidth=1.5)
         ax.axhline(20, color='green', linestyle=':', alpha=0.4)
         ax.axhline(80, color='red', linestyle=':', alpha=0.4)
         ax.fill_between(df['date'], df[col], color=color, alpha=0.1)
-        
-        # Fine-grained date scale for components
         ax.xaxis.set_major_locator(mdates.YearLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
         ax.xaxis.set_minor_locator(mdates.MonthLocator(interval=6))
-        
         ax.set_title(f"{title} - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
         ax.grid(True, which='major', alpha=0.3)
         ax.grid(True, which='minor', alpha=0.1, linestyle=':')
         plt.tight_layout()
         plt.savefig(filename, dpi=120)
         plt.close()
+
+    # --- Chart 3: Comparison with Index Trend (NEW) ---
+    print("Generating Comparison Chart with Index Price...")
+    try:
+        # Fetch Price (Baseline) - Using 000985 EM for 3 years
+        index_df = ak.stock_zh_index_daily_em(symbol="sh000985")
+        index_df['date'] = pd.to_datetime(index_df['date'])
+        index_df = index_df[['date', 'close']].rename(columns={'close': 'index_price'})
+        index_df = index_df[index_df['date'] >= '2023-01-01']
+        
+        comp_df = pd.merge(index_df, df, on='date', how='inner')
+        
+        fig, ax1 = plt.subplots(figsize=(14, 8))
+        # Left Axis: Index Price
+        ax1.plot(comp_df['date'], comp_df['index_price'], color='gray', alpha=0.4, linewidth=1.5, label='Index Price (000985)')
+        ax1.set_ylabel('Price (Index)')
+        
+        # Right Axis: Indicators
+        ax2 = ax1.twinx()
+        ax2.plot(comp_df['date'], comp_df['temp_4d'], color='black', linewidth=2, label='4D Temp')
+        ax2.plot(comp_df['date'], comp_df['pe_pct'], color='blue', alpha=0.5, linestyle='--', label='PE %')
+        ax2.set_ylabel('Score/Percentile (0-100)')
+        ax2.set_ylim(0, 100)
+        
+        lines1, labels1 = ax1.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left')
+        
+        plt.title(f"Market Temperature vs. Index Trend - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
+        plt.grid(True, alpha=0.2)
+        plt.tight_layout()
+        plt.savefig('market_temp_vs_index_compare.png', dpi=150)
+        plt.close()
+    except Exception as e:
+        print(f"Comparison chart failed: {e}")
 
 def update_html(latest):
     html_path = 'index.html'
@@ -125,7 +152,7 @@ def update_html(latest):
     new_tag = f'<div class="date-tag">🗓️ 报告日期：{today_str} | 数据截止：{cutoff_str}</div>'
     content = re.sub(r'<div class="date-tag">.*?</div>', new_tag, content)
     
-    # Replace the single 4D image with 5 images
+    # Section 2: 4D Charts
     four_d_images_html = """<div class="section-title">🧭 2. 4D 温度计</div>
             <div class="chart-container" style="text-align: center;">
                 <div style="margin-bottom: 30px;">
@@ -150,13 +177,28 @@ def update_html(latest):
                 </div>
             </div>"""
     
-    pattern = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<img class="report-img" src="market_temp_4D_Stacked_Large\.png".*?>'
-    if re.search(pattern, content, flags=re.DOTALL):
-        content = re.sub(pattern, four_d_images_html, content, flags=re.DOTALL)
+    # Section 3: Comparison Chart (NEW)
+    compare_section_html = """
+        <div class="section">
+            <div class="section-title">📈 3. 温度计 vs 指数走势对比</div>
+            <div class="chart-container" style="text-align: center;">
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">灰色曲线代表中证全指价格，黑色曲线代表 4D 综合温度。观察两者背离或同步性。</p>
+                <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison" style="width: 100%; max-width: 900px;">
+            </div>
+        </div>
+    """
+    
+    # Replace Section 2
+    pattern2 = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<div class="chart-container".*?</div>\s*</div>'
+    content = re.sub(pattern2, four_d_images_html + '\n        </div>', content, flags=re.DOTALL)
+    
+    # Add Section 3 if not present, or replace it
+    if '3. 温度计 vs 指数走势对比' not in content:
+        # Add before </body>
+        content = content.replace('</body>', compare_section_html + '\n    </body>')
     else:
-        # Improved Fallback: Match more flexibly
-        pattern_fallback = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<div class="chart-container".*?>.*?</div>\s*</div>'
-        content = re.sub(pattern_fallback, four_d_images_html + '\n        </div>', content, flags=re.DOTALL)
+        pattern3 = r'<div class="section">\s*<div class="section-title">📈 3\. 温度计 vs 指数走势对比</div>.*?</div>\s*</div>'
+        content = re.sub(pattern3, compare_section_html, content, flags=re.DOTALL)
 
     with open(html_path, 'w', encoding='utf-8') as f: f.write(content)
 
