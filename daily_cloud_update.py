@@ -139,9 +139,9 @@ def update_html(latest):
     if re.search(pattern, content, flags=re.DOTALL):
         content = re.sub(pattern, four_d_images_html, content, flags=re.DOTALL)
     else:
-        # Fallback if the pattern changed
-        pattern_fallback = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<div class="chart-container">.*?</div>'
-        content = re.sub(pattern_fallback, four_d_images_html, content, flags=re.DOTALL)
+        # Improved Fallback: Match more flexibly
+        pattern_fallback = r'<div class="section-title">🧭 2\. 4D 温度计</div>\s*<div class="chart-container".*?>.*?</div>\s*</div>'
+        content = re.sub(pattern_fallback, four_d_images_html + '\n        </div>', content, flags=re.DOTALL)
 
     with open(html_path, 'w', encoding='utf-8') as f: f.write(content)
 
