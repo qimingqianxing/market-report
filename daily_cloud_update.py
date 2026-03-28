@@ -64,15 +64,23 @@ def update_csv():
 
 def plot_2d_and_4d(df):
     # Chart 1: 2D Temperature
-    plt.figure(figsize=(12, 6))
-    plt.plot(df['date'], df['pe_pct'], label='PE Percentile', color='blue', alpha=0.7)
-    plt.plot(df['date'], df['pb_pct'], label='PB Percentile', color='red', alpha=0.7)
-    plt.fill_between(df['date'], df['temp_2d'], color='orange', alpha=0.2, label='2D Temperature')
-    plt.axhline(20, color='green', linestyle='--', alpha=0.5)
-    plt.axhline(80, color='red', linestyle='--', alpha=0.5)
-    plt.title(f"Market Temperature (2D: PE & PB) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(df['date'], df['pe_pct'], label='PE Percentile', color='blue', alpha=0.7)
+    ax.plot(df['date'], df['pb_pct'], label='PB Percentile', color='red', alpha=0.7)
+    ax.fill_between(df['date'], df['temp_2d'], color='orange', alpha=0.2, label='2D Temperature')
+    ax.axhline(20, color='green', linestyle='--', alpha=0.5)
+    ax.axhline(80, color='red', linestyle='--', alpha=0.5)
+    
+    # Fine-grained date scale
+    ax.xaxis.set_major_locator(mdates.YearLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+    ax.xaxis.set_minor_locator(mdates.MonthLocator(interval=6))
+    plt.xticks(rotation=0) # Year labels usually fit horizontally
+    
+    ax.set_title(f"Market Temperature (2D: PE & PB) - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
+    ax.legend()
+    ax.grid(True, which='major', alpha=0.4)
+    ax.grid(True, which='minor', alpha=0.1, linestyle=':')
     plt.tight_layout()
     plt.savefig('market_temp_full_comparison_final.png', dpi=150)
     plt.close()
@@ -87,13 +95,20 @@ def plot_2d_and_4d(df):
     ]
     
     for filename, col, title, color in component_data:
-        plt.figure(figsize=(10, 4))
-        plt.plot(df['date'], df[col], label=title, color=color, linewidth=1.5)
-        plt.axhline(20, color='green', linestyle=':', alpha=0.4)
-        plt.axhline(80, color='red', linestyle=':', alpha=0.4)
-        plt.fill_between(df['date'], df[col], color=color, alpha=0.1)
-        plt.title(f"{title} - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
-        plt.grid(True, alpha=0.2)
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.plot(df['date'], df[col], label=title, color=color, linewidth=1.5)
+        ax.axhline(20, color='green', linestyle=':', alpha=0.4)
+        ax.axhline(80, color='red', linestyle=':', alpha=0.4)
+        ax.fill_between(df['date'], df[col], color=color, alpha=0.1)
+        
+        # Fine-grained date scale for components
+        ax.xaxis.set_major_locator(mdates.YearLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+        ax.xaxis.set_minor_locator(mdates.MonthLocator(interval=6))
+        
+        ax.set_title(f"{title} - {df.iloc[-1]['date'].strftime('%Y-%m-%d')}")
+        ax.grid(True, which='major', alpha=0.3)
+        ax.grid(True, which='minor', alpha=0.1, linestyle=':')
         plt.tight_layout()
         plt.savefig(filename, dpi=120)
         plt.close()
