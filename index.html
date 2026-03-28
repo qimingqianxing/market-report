@@ -14,6 +14,7 @@
         .report-img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin: 0 auto; }
         .desc { margin-top: 25px; font-size: 16px; color: #34495e; background: #fffafa; padding: 22px; border-radius: 12px; border-left: 4px solid #b22222; line-height: 1.8; }
         .footer { text-align: center; margin-top: 80px; color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 30px; }
+        h3 { text-align: center; color: #444; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -22,55 +23,51 @@
         <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-27</div>
 
         <div class="section">
-            <div class="section-title">📊 1. 2D 温度计</div>
-            <img class="report-img" src="market_temp_full_comparison_final.png" alt="13年周期对比图">
+            <div class="section-title">📊 1. 2D 温度计 (PE/PB 极简版)</div>
+            <img class="report-img" src="market_temp_full_comparison_final.png" alt="2D Comparison">
             <div class="desc">
-                <strong>模型解读：</strong> 包含经典版与专业版（资产价值敏感型）。专业版在 PB 极低区域（&lt;30%）自动强化资产价值权重，能更敏锐捕捉历史大底。
+                <strong>模型解读：</strong> 包含经典版与专业版（资产价值敏感型）。专业版在 PB 极低区域（<30%）自动强化资产价值权重，能更敏锐捕捉历史大底。
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">🧭 2. 4D 温度计</div>
-            <div class="chart-container" style="text-align: center;">
+            <div class="section-title">🧭 2. 4D 温度计 (全维度深度版)</div>
+            <div class="chart-container">
                 <div style="margin-bottom: 30px;">
                     <h3>4D 综合温度走势 (Aggregate)</h3>
-                    <img class="report-img" src="market_temp_4d_total.png" alt="4D Total" style="width: 100%; max-width: 900px;">
+                    <img class="report-img" src="market_temp_4d_total.png" alt="4D Total">
                 </div>
                 <div style="margin-bottom: 30px;">
                     <h3>PE 估值维度 (Valuation)</h3>
-                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE" style="width: 100%; max-width: 900px;">
+                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE">
                 </div>
                 <div style="margin-bottom: 30px;">
                     <h3>PB 估值维度 (Book Value)</h3>
-                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB" style="width: 100%; max-width: 900px;">
+                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB">
                 </div>
                 <div style="margin-bottom: 30px;">
                     <h3>ERP 风险溢价维度 (Equity Risk Premium)</h3>
-                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP" style="width: 100%; max-width: 900px;">
+                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP">
                 </div>
                 <div style="margin-bottom: 30px;">
                     <h3>市场情绪/广度维度 (Sentiment & Breadth)</h3>
-                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment" style="width: 100%; max-width: 900px;">
+                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment">
                 </div>
             </div>
-        </div>
-        </div>
-        </div>
             <div class="desc">
                 <strong>多维深度：</strong> 整合估值 (30%)、风险溢价 ERP (30%)、情绪与杠杆 (20%) 及市场宽度 (20%)。全维度监控市场过热风险。
             </div>
         </div>
 
-        <div class="footer">本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议</div>
-    </div>
-
         <div class="section">
             <div class="section-title">📈 3. 温度计 vs 指数走势对比</div>
-            <div class="chart-container" style="text-align: center;">
-                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">灰色曲线代表中证全指价格，黑色曲线代表 4D 综合温度。观察两者背离或同步性。</p>
-                <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison" style="width: 100%; max-width: 900px;">
+            <div class="chart-container">
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px; text-align: center;">灰色曲线代表中证全指价格，黑色曲线代表 4D 综合温度。蓝色虚线为 PE 分位。观察两者背离或同步性。</p>
+                <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison">
             </div>
         </div>
-    
-    </body>
+
+        <div class="footer">本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议</div>
+    </div>
+</body>
 </html>
