@@ -20,63 +20,32 @@
 <body>
     <div class="container">
         <h1>A股股市温度计日报</h1>
-        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-27</div>
+        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-26</div>
 
         <div class="section">
             <div class="section-title">📊 1. 2D 温度计 (PE/PB 极简版)</div>
             <img class="report-img" src="market_temp_full_comparison_final.png" alt="2D Comparison">
-            <div class="desc">
-                <strong>模型解读：</strong> 包含经典版与专业版（资产价值敏感型）。专业版在 PB 极低区域（<30%）自动强化资产价值权重，能更敏锐捕捉历史大底。
-            </div>
         </div>
 
         <div class="section">
             <div class="section-title">🧭 2. 4D 温度计 (全维度深度版)</div>
-            <div class="chart-container">
-                <div style="margin-bottom: 30px;">
-                    <h3>4D 综合温度走势 (Aggregate)</h3>
-                    <img class="report-img" src="market_temp_4d_total.png" alt="4D Total">
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <h3>PE 估值维度 (Valuation)</h3>
-                    <img class="report-img" src="market_temp_4d_pe.png" alt="PE">
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <h3>PB 估值维度 (Book Value)</h3>
-                    <img class="report-img" src="market_temp_4d_pb.png" alt="PB">
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <h3>ERP 风险溢价维度 (Equity Risk Premium)</h3>
-                    <img class="report-img" src="market_temp_4d_erp.png" alt="ERP">
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <h3>市场情绪/广度维度 (Sentiment & Breadth)</h3>
-                    <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment">
-                </div>
-            </div>
-            <div class="desc">
-                <strong>多维深度：</strong> 整合估值 (30%)、风险溢价 ERP (30%)、情绪与杠杆 (20%) 及市场宽度 (20%)。全维度监控市场过热风险。
+            <div style="margin-bottom: 30px;">
+                <img class="report-img" src="market_temp_4d_total.png" alt="4D Total">
             </div>
         </div>
 
         <div class="section">
             <div class="section-title">📈 3. 温度计 vs 指数走势对比</div>
-            <div class="chart-container">
-                <p style="color: #666; font-size: 14px; margin-bottom: 20px; text-align: center;">灰色曲线代表中证全指价格，黑色曲线代表 4D 综合温度。蓝色虚线为 PE 分位。观察两者背离或同步性。</p>
-                <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison">
-            </div>
+            <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison">
+        </div>
+
+        <div class="section">
+            <div class="section-title">📡 4. 前瞻雷达：价格 vs 杠杆情绪 (两融)</div>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">红色线代表两融余额。观察背离信号：价格上涨但两融下降代表动能枯竭。</p>
+            <img class="report-img" src="lead_lag_radar.png" alt="Radar">
         </div>
 
         <div class="footer">本报告由 AI 投研助手自动生成 | 仅供参考 不构成投资建议</div>
     </div>
-
-        <div class="section">
-            <div class="section-title">📡 4. 前瞻雷达：价格 vs 杠杆情绪 (两融)</div>
-            <div class="chart-container" style="text-align: center;">
-                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">红色线代表两融余额（杠杆资金意愿）。当价格上涨但两融下降时，往往预示着动能衰竭；当价格新低但两融企稳，通常是筑底信号。</p>
-                <img class="report-img" src="lead_lag_radar.png" alt="Radar" style="width: 100%; max-width: 900px;">
-            </div>
-        </div>
-        
-    </body>
+</body>
 </html>
