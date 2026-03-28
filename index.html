@@ -11,37 +11,50 @@
         .date-tag { text-align: center; color: #666; font-size: 14px; margin-bottom: 40px; background: #fdf2f2; display: inline-block; padding: 4px 15px; border-radius: 20px; position: relative; left: 50%; transform: translateX(-50%); }
         .section { margin-bottom: 60px; }
         .section-title { border-left: 8px solid #b22222; padding-left: 15px; font-size: 22px; font-weight: bold; margin-bottom: 25px; color: #1a1a1a; }
-        .report-img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin: 0 auto; }
+        .report-img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin: 30px auto; }
         .desc { margin-top: 25px; font-size: 16px; color: #34495e; background: #fffafa; padding: 22px; border-radius: 12px; border-left: 4px solid #b22222; line-height: 1.8; }
         .footer { text-align: center; margin-top: 80px; color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 30px; }
-        h3 { text-align: center; color: #444; margin-top: 30px; }
+        h3 { text-align: center; color: #444; margin-top: 40px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>A股股市温度计日报</h1>
-        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-26</div>
+        <div class="date-tag">🗓️ 报告日期：2026-03-28 | 数据截止：2026-03-27</div>
 
         <div class="section">
             <div class="section-title">📊 1. 2D 温度计 (PE/PB 极简版)</div>
             <img class="report-img" src="market_temp_full_comparison_final.png" alt="2D Comparison">
+            <div class="desc"><strong>解读：</strong> 经典PE/PB分位。用于观察市场整体估值水位。</div>
         </div>
 
         <div class="section">
             <div class="section-title">🧭 2. 4D 温度计 (全维度深度版)</div>
-            <div style="margin-bottom: 30px;">
-                <img class="report-img" src="market_temp_4d_total.png" alt="4D Total">
-            </div>
+            <h3>4D 综合温度走势 (Aggregate)</h3>
+            <img class="report-img" src="market_temp_4d_total.png" alt="4D Total">
+            
+            <h3>PE 估值维度 (Valuation)</h3>
+            <img class="report-img" src="market_temp_4d_pe.png" alt="PE">
+            
+            <h3>PB 估值维度 (Book Value)</h3>
+            <img class="report-img" src="market_temp_4d_pb.png" alt="PB">
+            
+            <h3>ERP 风险溢价维度 (Equity Risk Premium)</h3>
+            <img class="report-img" src="market_temp_4d_erp.png" alt="ERP">
+            
+            <h3>市场情绪/广度维度 (Sentiment & Breadth)</h3>
+            <img class="report-img" src="market_temp_4d_sentiment.png" alt="Sentiment">
         </div>
 
         <div class="section">
             <div class="section-title">📈 3. 温度计 vs 指数走势对比</div>
+            <p style="text-align:center; color:#666;">黑色实线：4D温度 | 灰色实线：价格 | 蓝色虚线：PE分位</p>
             <img class="report-img" src="market_temp_vs_index_compare.png" alt="Comparison">
         </div>
 
         <div class="section">
             <div class="section-title">📡 4. 前瞻雷达：价格 vs 杠杆情绪 (两融)</div>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">红色线代表两融余额。观察背离信号：价格上涨但两融下降代表动能枯竭。</p>
+            <p style="text-align: center; color: #666;">红色线代表两融余额。观察价格上涨但两融下降的背离信号。</p>
             <img class="report-img" src="lead_lag_radar.png" alt="Radar">
         </div>
 
