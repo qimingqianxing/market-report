@@ -5,3 +5,4 @@ requests
 akshare
 lxml
 beautifulsoup4
+openpyxl
